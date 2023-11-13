@@ -1,30 +1,58 @@
 import unittest
-from math_quiz import function_A, function_B, function_C
+from math_quiz import mainFunc, compute, mainLogic  
 
+class TestMainFunc(unittest.TestCase):
 
-class TestMathGame(unittest.TestCase):
+    def test_mainFunc(self):
+        # Test with a specific range
+        result = mainFunc(1, 10)
+        self.assertTrue(1 <= result <= 10)
 
-    def test_function_A(self):
-        # Test if random numbers generated are within the specified range
-        min_val = 1
-        max_val = 10
-        for _ in range(1000):  # Test a large number of random values
-            rand_num = function_A(min_val, max_val)
-            self.assertTrue(min_val <= rand_num <= max_val)
+        # Test with a different range
+        result = mainFunc(20, 30)
+        self.assertTrue(20 <= result <= 30)
 
-    def test_function_B(self):
-        # TODO
-        pass
+        # Test with a single value range
+        result = mainFunc(5, 5)
+        self.assertEqual(result, 5)
 
-    def test_function_C(self):
-            test_cases = [
-                (5, 2, '+', '5 + 2', 7),
-                ''' TODO add more test cases here '''
-            ]
+        # Test with a negative range
+        result = mainFunc(-10, 0)
+        self.assertTrue(-10 <= result <= 0)
 
-            for num1, num2, operator, expected_problem, expected_answer in test_cases:
-                # TODO
-                pass
+        # Test with a large range
+        result = mainFunc(0, 1000000)
+        self.assertTrue(0 <= result <= 1000000)
 
-if __name__ == "__main__":
+class TestComputeFunction(unittest.TestCase):
+
+    def test_compute_valid_operators(self):
+        operators = set(['+', '-', '*'])
+        result = compute()
+        self.assertIn(result, operators)
+
+    def test_compute_multiple_calls(self):
+        operators = set(['+', '-', '*'])
+        results = [compute() for _ in range(100)]
+        self.assertTrue(all(op in operators for op in results))
+
+class TestMainLogic(unittest.TestCase):
+
+    def test_addition(self):
+        result = mainLogic(3, 4, '+')
+        self.assertEqual(result, ('3 + 4', 7))
+
+    def test_subtraction(self):
+        result = mainLogic(8, 2, '-')
+        self.assertEqual(result, ('8 - 2', 6))
+
+    def test_multiplication(self):
+        result = mainLogic(5, 6, '*')
+        self.assertEqual(result, ('5 * 6', 30))
+
+    def test_invalid_operator(self):
+        with self.assertRaises(ValueError):
+            mainLogic(5, 6, '/')
+
+if __name__ == '__main__':
     unittest.main()
